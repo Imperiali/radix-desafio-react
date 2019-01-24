@@ -6,18 +6,14 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, FlatList, SafeAreaView, SectionList} from 'react-native';
-import Category from "../components/category";
+import {StyleSheet, Text, View, SafeAreaView, SectionList, TouchableOpacity} from 'react-native';
+import {createAppContainer, createStackNavigator} from 'react-navigation';
 import Exercice from "../components/exercice";
+import NewExercice from "./newExercice";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
 
-export default class App extends Component<> {
+class App extends Component<> {
 
 
   constructor(props) {
@@ -110,13 +106,42 @@ export default class App extends Component<> {
 
                 keyExtractor={(item) => item.id}
             />
+            <TouchableOpacity style={styles.fab}
+                              onPress={()=>this.props.navigation.navigate('NewExercicies')}>
+              <Icon style={styles.fab} color={'green'} size={60} name="add-circle"/>
+            </TouchableOpacity>
           </View>
         </SafeAreaView>
   );
   }
 }
 
+const stackNavigationConfig = {
+  "home": {
+    screen: App,
+    navigationOptions: {
+      title: "Home"
+    }
+  },
+  "NewExercicies": {
+    screen: NewExercice,
+    navigationOptions: {
+      title: "New Exercice"
+    }
+  }
+
+};
+
+
+
+export default createAppContainer (createStackNavigator(stackNavigationConfig));
+
 const styles = StyleSheet.create({
+  fab:{
+    position: 'absolute',
+    right: 0,
+    bottom: 0
+  },
   sectionList:{
     flex: 1
   },
