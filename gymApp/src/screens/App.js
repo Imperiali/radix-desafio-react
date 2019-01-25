@@ -11,7 +11,7 @@ import {createAppContainer, createStackNavigator} from 'react-navigation';
 import Exercice from "../components/exercice";
 import NewExercice from "./newExercice";
 import Icon from "react-native-vector-icons/MaterialIcons";
-
+import Provider,{withStorageAndAction} from "../provider/provider"
 
 class App extends Component<> {
 
@@ -19,70 +19,73 @@ class App extends Component<> {
   constructor(props) {
     super(props);
 
-    this.state = {
-        categories: [
-          {
-            id: "1",
-            title: "peito",
-            data : [
-              {
-                id: 1,
-                name: "exercicio a",
-                repetitions: "3/15",
-                weight: 35
-              },
-              {
-                id: 2,
-                name: "exercicio b",
-                repetitions: "3/15",
-                weight: 35
-              },
-              {
-                id: 3,
-                name: "exercicio c",
-                repetitions: "3/15",
-                weight: 35
-              }
-            ]
-          },
-          {
-            id: "2",
-            title: "costas",
-            data : [
-              {
-                id: 1,
-                name: "exercicio a",
-                repetitions: "3/15",
-                weight: 35
-              },
-              {
-                id: 2,
-                name: "exercicio b",
-                repetitions: "3/15",
-                weight: 35
-              },
-            ]
-          },
-          {
-            id: "3",
-            title: "perna",
-            data : [
-              {
-                id: 1,
-                name: "exercicio a",
-                repetitions: "3/15",
-                weight: 35
-              },
-
-            ]
-          }
-        ]
-    }
+    // this.state = {
+    //     categories: [
+    //       {
+    //         id: "1",
+    //         title: "peito",
+    //         data : [
+    //           {
+    //             id: 1,
+    //             name: "exercicio a",
+    //             repetitions: "3/15",
+    //             weight: 35
+    //           },
+    //           {
+    //             id: 2,
+    //             name: "exercicio b",
+    //             repetitions: "3/15",
+    //             weight: 35
+    //           },
+    //           {
+    //             id: 3,
+    //             name: "exercicio c",
+    //             repetitions: "3/15",
+    //             weight: 35
+    //           }
+    //         ]
+    //       },
+    //       {
+    //         id: "2",
+    //         title: "costas",
+    //         data : [
+    //           {
+    //             id: 1,
+    //             name: "exercicio a",
+    //             repetitions: "3/15",
+    //             weight: 35
+    //           },
+    //           {
+    //             id: 2,
+    //             name: "exercicio b",
+    //             repetitions: "3/15",
+    //             weight: 35
+    //           },
+    //         ]
+    //       },
+    //       {
+    //         id: "3",
+    //         title: "perna",
+    //         data : [
+    //           {
+    //             id: 1,
+    //             name: "exercicio a",
+    //             repetitions: "3/15",
+    //             weight: 35
+    //           },
+    //
+    //         ]
+    //       }
+    //     ]
+    // }
 
   }
 
   _renderSectionHeader = ({ section : {title}}) => (
-      <Text style={styles.header}>{title}</Text>
+      <TouchableOpacity
+                        onPress={()=> this.props.action.addCategories({title: "perna"})}>
+        <Text style={styles.header}>{title}</Text>
+      </TouchableOpacity>
   )
 
   _renderItem = ({item, section}) => (
@@ -102,7 +105,7 @@ class App extends Component<> {
 
                 renderSectionHeader={this._renderSectionHeader}
 
-                sections={this.state.categories}
+                sections={this.props.storage.categories}
 
                 keyExtractor={(item) => item.id}
             />
@@ -118,13 +121,13 @@ class App extends Component<> {
 
 const stackNavigationConfig = {
   "home": {
-    screen: App,
+    screen: withStorageAndAction(App),
     navigationOptions: {
       title: "Home"
     }
   },
   "NewExercicies": {
-    screen: NewExercice,
+    screen: withStorageAndAction(NewExercice),
     navigationOptions: {
       title: "New Exercice"
     }
@@ -133,8 +136,13 @@ const stackNavigationConfig = {
 };
 
 
+const StackNavigator = createStackNavigator(stackNavigationConfig);
 
-export default createAppContainer (createStackNavigator(stackNavigationConfig));
+const AppContainer = createAppContainer (StackNavigator);
+
+export default () => (<Provider>
+  <AppContainer/>
+</Provider>)
 
 const styles = StyleSheet.create({
   fab:{

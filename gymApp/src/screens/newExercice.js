@@ -6,18 +6,7 @@
  */
 
 import React, {Component} from 'react';
-import {StyleSheet, TextInput, Button, Text, View} from 'react-native';
-// import {
-//     ActionsContainer,
-//     Button,
-//     FieldsContainer,
-//     Fieldset,
-//     Form,
-//     FormGroup,
-//     Input,
-//     Label,
-//     Switch
-// } from 'react-native-clean-form'
+import {StyleSheet, TextInput, Button, Text, View, TouchableOpacity, Picker} from 'react-native';
 
 
 export default class NewExercice extends Component<> {
@@ -26,10 +15,10 @@ export default class NewExercice extends Component<> {
     constructor(props) {
         super(props);
         this.state = {
-                categoria: '',
+                title: '',
                 id: '',
                 name: '',
-                repetition: '',
+                repetitions: '',
                 weight: '',
             }
     }
@@ -37,23 +26,34 @@ export default class NewExercice extends Component<> {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Categoria</Text>
+                <Text style={styles.label}>Categoria</Text>
                 <TextInput
-                    onChangeText={(text) => this.setState({categoria: text})}/>
-                <Text>Numero do aparelho</Text>
+                    style={styles.input}
+                    onChangeText={(text) => {
+                        this.setState({title: text})
+                    }}/>
+                <Text style={styles.label}>Numero do aparelho</Text>
                 <TextInput
+                    style={styles.input}
                     onChangeText={(text) => this.setState({id: text})}/>
-                <Text>Nome do exercicio</Text>
+                <Text style={styles.label}>Nome do exercicio</Text>
                 <TextInput
+                    style={styles.input}
                     onChangeText={(text) => this.setState({name: text})}/>
-                <Text>Quantidade de repetições</Text>
+                <Text style={styles.label}>Quantidade de repetições</Text>
                 <TextInput
-                    onChangeText={(text) => this.setState({repetition: text})}/>
-                <Text>Peso</Text>
+                    style={styles.input}
+                    onChangeText={(text) => this.setState({repetitions: text})}/>
+                <Text style={styles.label}>Peso</Text>
                 <TextInput
+                    style={styles.input}
                     onChangeText={(text) => this.setState({weight: text})}/>
                 <Button
-                    onPress={() => {}}
+                    onPress={() => {
+                        console.log(this.state)
+                        this.props.action.addCategories(this.state)
+                        this.props.navigation.goBack()
+                    }}
                     title={"enviar"}/>
             </View>
         );
@@ -62,6 +62,15 @@ export default class NewExercice extends Component<> {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#F5FCFF',
+    },
+    label: {
+        fontWeight: 'bold',
+        margin: 15,
+        fontSize: 20,
+    },
+    input: {
+        marginLeft: 20,
+        borderBottomColor: 'lightgrey',
+        borderBottomWidth: 1
     }
 });
