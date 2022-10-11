@@ -9,7 +9,7 @@
   "dependencies": {
     "formik": "^1.4.2",
     "react": "16.6.3",
-    "react-native": "0.57.8",
+    "react-native": "0.70.2",
     "react-native-clean-form": "^0.5.0",
     "react-native-elements": "^0.19.1",
     "react-native-gesture-handler": "^1.0.14",
